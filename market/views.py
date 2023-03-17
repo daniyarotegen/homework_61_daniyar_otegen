@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.http import HttpResponseBadRequest
 from django.shortcuts import redirect, get_object_or_404, render
@@ -81,7 +82,7 @@ class CategoryIndex(ListView):
         return context
 
 
-class ProductAdd(CreateView):
+class ProductAdd(LoginRequiredMixin, CreateView):
     template_name = 'product_create.html'
     model = Product
     form_class = ProductForm
@@ -95,7 +96,7 @@ class ProductDetail(DetailView):
     model = Product
 
 
-class ProductUpdate(UpdateView):
+class ProductUpdate(LoginRequiredMixin, UpdateView):
     template_name = 'product_update.html'
     form_class = ProductForm
     model = Product
@@ -104,7 +105,7 @@ class ProductUpdate(UpdateView):
         return reverse('product_detail', kwargs={'pk': self.object.pk})
 
 
-class ProductDelete(DeleteView):
+class ProductDelete(LoginRequiredMixin, DeleteView):
     template_name = 'product_delete.html'
     model = Product
     success_url = reverse_lazy('index')
